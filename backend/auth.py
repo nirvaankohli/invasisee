@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-PWD_CONTEXT = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Use pbkdf2_sha256 to avoid native bcrypt dependency issues on some setups
+PWD_CONTEXT = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"

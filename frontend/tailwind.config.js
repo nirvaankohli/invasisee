@@ -7,6 +7,11 @@ export default {
   theme: {
     extend: {
       colors: {
+        brand: {
+          primary: '#485C11', // deep olive
+          sage: '#8E9C78',
+          white: '#FFFFFF',
+        },
         green: {
           50: '#f0fdf4',
           100: '#dcfce7',
@@ -22,13 +27,14 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
-        serif: ['Iowan Old Style', 'Palatino Linotype', 'URW Palladio L', 'P052', 'serif'],
-        display: ['Iowan Old Style', 'Apple Garamond', 'Baskerville', 'Times New Roman', 'Droid Serif', 'Times', 'Source Serif Pro', 'serif'],
+        // Make Cormorant Garamond the default for all families
+        sans: ['"Cormorant Garamond"', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif'],
+        serif: ['"Cormorant Garamond"', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif'],
+        display: ['"Cormorant Garamond"', 'Georgia', 'Cambria', 'Times New Roman', 'Times', 'serif'],
       },
       animation: {
-        'fade-in': 'fadeIn 0.6s ease-out forwards',
-        'float': 'float 6s ease-in-out infinite',
+        'fade-in': 'fadeIn 0.8s ease-out forwards',
+        'float': 'float 8s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -37,7 +43,7 @@ export default {
         },
         float: {
           '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-20px)' },
+          '50%': { transform: 'translateY(-14px)' },
         },
       },
     },

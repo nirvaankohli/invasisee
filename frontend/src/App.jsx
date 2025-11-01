@@ -9,6 +9,7 @@ import { Footer } from './components/Footer';
 function App() {
   return (
     <div className="min-h-screen">
+      <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet"></link>
       <Header />
       <main>
         <Hero />
