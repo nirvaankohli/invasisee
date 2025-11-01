@@ -14,42 +14,62 @@ InvaSee combines mobile-first web technologies with community engagement to crea
 
 ## 🏗️ Architecture
 
-The project consists of two main components:
+The project consists of a unified Flask application serving both backend API and frontend HTML:
 
-### Frontend
-A sophisticated, nature-inspired React + Tailwind CSS landing page with:
+### Application Stack
+A Flask-based web application with server-side rendering and secure authentication:
+- **HTML/CSS/JS** for the frontend with vanilla JavaScript
+- **Flask** backend with secure session management
+- **Flask-Login** for user authentication
+- **SQLite** database for user management
+
+**Tech Stack**: Python, Flask, Flask-Login, HTML5, CSS3, Vanilla JavaScript
+
+### Features
+- Server-side rendering with Jinja2 templates
+- Secure session-based authentication with HTTPOnly cookies
+- RESTful API endpoints for user management
 - Responsive mobile-first design
-- Accessible and semantic HTML
-- Green color palette with organic visual elements
-- Interactive map integration (lazy-loaded)
-- Virtual "Tree Pet" gamification feature
+- Nature-inspired UI with smooth animations
 
-**Tech Stack**: React 18, Vite, Tailwind CSS v4
-
-See [frontend/README.md](./frontend/README.md) for detailed frontend documentation.
-
-### Backend
-A FastAPI-based REST API for data management and processing.
-
-**Tech Stack**: Python, FastAPI, SQLite
+See [backend/README.md](./backend/README.md) for detailed backend documentation.
 
 ## 🚀 Getting Started
 
-### Frontend Development
+### Prerequisites
+- Python 3.8 or higher
+- pip (Python package manager)
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+### Installation and Running
 
-Visit `http://localhost:5173` to view the landing page.
-
-### Backend Development
-
+1. **Install dependencies**:
 ```bash
 cd backend
-# Backend setup instructions coming soon
+pip install -r requirements.txt
+```
+
+2. **Set up environment variables** (create a `.env` file in the `backend` directory):
+```bash
+SECRET_KEY=your-secret-key-here
+```
+
+3. **Run the Flask application**:
+```bash
+python main.py
+```
+
+4. **Access the application**:
+Visit `http://localhost:5000` to view the application.
+
+The database will be automatically created on first run at `backend/db/auth.db`.
+
+### Development Mode
+
+For development with auto-reload:
+```bash
+cd backend
+export FLASK_ENV=development
+python main.py
 ```
 
 ## 📸 Screenshots
