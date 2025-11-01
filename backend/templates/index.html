@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvaSee - Spot. Verify. Protect.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Initial user state from server -->
+    <script>
+        window.INITIAL_USER = {{ user|tojson|safe if user else 'null' }};
+    </script>
+</head>
+<body>
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="header">
+            <nav class="nav-container">
+                <div class="nav-content">
+                    <!-- Logo -->
+                    <div class="logo-container">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M16 4C13 4 10 6 8 8C6 10 4 13 4 16C4 19 6 22 8 24C10 26 13 28 16 28C19 28 22 26 24 24C26 22 28 19 28 16C28 13 26 10 24 8C22 6 19 4 16 4Z" fill="url(#leafGradient)"/>
+                            <path d="M16 8C14 8 12 9 11 10C10 11 9 13 9 15C9 17 10 19 11 20C12 21 14 22 16 22C18 22 20 21 21 20C22 19 23 17 23 15C23 13 22 11 21 10C20 9 18 8 16 8Z" fill="white" opacity="0.3"/>
+                            <defs>
+                                <linearGradient id="leafGradient" x1="4" y1="4" x2="28" y2="28">
+                                    <stop offset="0%" stop-color="#22c55e"/>
+                                    <stop offset="100%" stop-color="#16a34a"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <span class="logo-text">InvaSee</span>
+                    </div>
+
+                    <!-- Navigation Links -->
+                    <div class="nav-links">
+                        <a href="#map" class="nav-link">Map</a>
+                        <a href="#report" class="btn btn-primary">Start Reporting</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-bg-accent hero-bg-accent-top"></div>
+                <div class="hero-bg-accent hero-bg-accent-bottom"></div>
+
+                <div class="container">
+                    <div class="hero-grid">
+                        <!-- Left column: Text content -->
+                        <div class="hero-text">
+                            <h1 class="hero-title animate-fade-in">
+                                Protect Your Environment.
+                            </h1>
+                            
+                            <p class="hero-subtitle animate-fade-in">
+                                Join our community in protecting local ecosystems by identifying and reporting invasive species.
+                            </p>
+
+                            <div class="hero-buttons">
+                                <a href="#map" class="btn btn-primary btn-lg">Explore Map</a>
+                                <a href="#how-it-works" class="btn btn-outline btn-lg">How It Works</a>
+                            </div>
+                        </div>
+
+                        <!-- Right column: Auth panel + Phone mock -->
+                        <div class="hero-visual animate-fade-in">
+                            <!-- Gradient backdrop -->
+                            <div class="hero-backdrop"></div>
+                            
+                            <!-- Auth panel -->
+                            <div id="auth-panel" class="auth-panel hidden-mobile animate-fade-in"></div>
+
+                            <!-- Phone mockup -->
+                            <div class="phone-shadow"></div>
+                            <div class="phone-mockup">
+                                <div class="phone-screen">
+                                    <!-- App preview placeholder -->
+                                    <div class="phone-app-preview">
+                                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                            <path d="M24 4C20 4 16 6 13 9C10 12 8 16 8 20C8 24 10 28 13 31C16 34 20 36 24 36C28 36 32 34 35 31C38 28 40 24 40 20C40 16 38 12 35 9C32 6 28 4 24 4Z" fill="url(#phoneGradient)"/>
+                                            <path d="M24 12C21 12 18 13.5 16.5 15.5C15 17.5 14 20 14 23C14 26 15 28.5 16.5 30.5C18 32.5 21 34 24 34C27 34 30 32.5 31.5 30.5C33 28.5 34 26 34 23C34 20 33 17.5 31.5 15.5C30 13.5 27 12 24 12Z" fill="white" opacity="0.4"/>
+                                            <defs>
+                                                <linearGradient id="phoneGradient" x1="8" y1="4" x2="40" y2="36">
+                                                    <stop offset="0%" stop-color="#8E9C78"/>
+                                                    <stop offset="100%" stop-color="#485C11"/>
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+                                    </div>
+                                    
+                                    <div class="phone-placeholder">
+                                        <div class="phone-placeholder-line phone-placeholder-line-1"></div>
+                                        <div class="phone-placeholder-line phone-placeholder-line-2"></div>
+                                    </div>
+                                    
+                                    <div class="phone-map-preview"></div>
+                                    
+                                    <div class="phone-buttons">
+                                        <div class="phone-button phone-button-1"></div>
+                                        <div class="phone-button phone-button-2"></div>
+                                        <div class="phone-button phone-button-3"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Decorative leaves -->
+                            <svg class="decorative-leaf decorative-leaf-top animate-float" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+                                <path d="M50 10C30 10 15 25 10 40C5 55 10 75 25 85C40 95 60 95 75 85C90 75 95 55 90 40C85 25 70 10 50 10Z"/>
+                            </svg>
+                            
+                            <svg class="decorative-leaf decorative-leaf-bottom animate-float" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+                                <path d="M50 5C25 5 10 20 5 35C0 50 5 70 20 85C35 100 65 100 80 85C95 70 100 50 95 35C90 20 75 5 50 5Z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- How It Works Section -->
+            <section id="how-it-works" class="how-it-works-section">
+                <div class="container">
+                    <div class="section-header animate-fade-in">
+                        <h2 class="section-title">How It Works</h2>
+                        <p class="section-subtitle">Three simple steps to help protect our ecosystem</p>
+                    </div>
+
+                    <div class="step-cards">
+                        <div class="step-card animate-fade-in">
+                            <div class="step-icon">
+                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M16 4C15 4 14 4.5 13 5.5L4 14.5C3 15.5 3 17 4 18L14 28C15 29 16.5 29 17.5 28L27.5 18C28.5 17 28.5 15.5 27.5 14.5L18 5C17 4.5 17 4 16 4Z" fill="white"/>
+                                    <circle cx="16" cy="16" r="4" fill="white"/>
+                                </svg>
+                            </div>
+                            <h3 class="step-title">Spot</h3>
+                            <p class="step-description">Discover an invasive species in your area using our identification guide.</p>
+                        </div>
+
+                        <div class="step-card animate-fade-in" style="animation-delay: 0.1s;">
+                            <div class="step-icon">
+                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M16 2L20 12L30 14L22 22L24 32L16 27L8 32L10 22L2 14L12 12L16 2Z" fill="white"/>
+                                </svg>
+                            </div>
+                            <h3 class="step-title">Verify</h3>
+                            <p class="step-description">Upload a photo and location to help our community confirm the sighting.</p>
+                        </div>
+
+                        <div class="step-card animate-fade-in" style="animation-delay: 0.2s;">
+                            <div class="step-icon">
+                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                    <path d="M16 4C13 4 10 6 8 8C6 10 4 13 4 16C4 19 6 22 8 24C10 26 13 28 16 28C19 28 22 26 24 24C26 22 28 19 28 16C28 13 26 10 24 8C22 6 19 4 16 4Z" fill="white"/>
+                                    <path d="M12 16L15 19L21 13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <h3 class="step-title">Protect</h3>
+                            <p class="step-description">Contribute to local conservation efforts and watch your impact grow.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Map Section -->
+            <section id="map" class="map-section">
+                <div class="container">
+                    <div class="map-container">
+                        <div class="map-content">
+                            <div class="section-header">
+                                <h2 class="section-title">Explore the Map</h2>
+                                <p class="section-subtitle">See real-time invasive species sightings in your area and contribute to our growing database.</p>
+                            </div>
+
+                            <div class="map-preview">
+                                <div class="map-placeholder">
+                                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M32 8L8 20V52L32 40L56 52V20L32 8Z" fill="url(#mapGradient)"/>
+                                        <path d="M32 8V40M8 20L32 8L56 20M8 52L32 40L56 52" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                        <defs>
+                                            <linearGradient id="mapGradient" x1="8" y1="8" x2="56" y2="52">
+                                                <stop offset="0%" stop-color="#22c55e"/>
+                                                <stop offset="100%" stop-color="#16a34a"/>
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                    <p class="map-placeholder-text">Interactive Map</p>
+                                </div>
+                            </div>
+
+                            <div class="map-button-container">
+                                <a href="#map" class="btn btn-primary btn-lg">
+                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path d="M10 2L2 6V16L10 12L18 16V6L10 2Z" fill="currentColor"/>
+                                        <path d="M10 2V12M2 6L10 2L18 6M2 16L10 12L18 16" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                                    </svg>
+                                    Explore Map
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tree Pet Section -->
+            <section class="tree-pet-section">
+                <div class="container">
+                    <div class="tree-pet-content animate-fade-in">
+                        <h2 class="section-title">Watch Your Impact Grow</h2>
+                        <p class="tree-pet-subtitle">Nurture your virtual tree pet as you contribute to protecting real ecosystems.</p>
+
+                        <div class="growth-steps">
+                            <div class="growth-step animate-fade-in">
+                                <div class="growth-icon growth-icon-small">
+                                    <svg viewBox="0 0 100 100" fill="white" aria-hidden="true">
+                                        <path d="M50 70C50 70 45 60 45 50C45 40 48 35 50 30C52 35 55 40 55 50C55 60 50 70 50 70Z"/>
+                                        <rect x="47" y="70" width="6" height="15" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <h3 class="growth-title">Seedling</h3>
+                                <p class="growth-description">Start your journey with your first report</p>
+                            </div>
+
+                            <div class="growth-step animate-fade-in" style="animation-delay: 0.1s;">
+                                <div class="growth-icon growth-icon-medium">
+                                    <svg viewBox="0 0 100 100" fill="white" aria-hidden="true">
+                                        <g>
+                                            <path d="M50 75C50 75 45 65 45 55C45 45 48 40 50 35C52 40 55 45 55 55C55 65 50 75 50 75Z"/>
+                                            <path d="M40 60C40 60 35 55 35 50C35 45 37 42 40 40C42 42 45 45 45 50C45 55 40 60 40 60Z"/>
+                                            <path d="M60 60C60 60 65 55 65 50C65 45 63 42 60 40C58 42 55 45 55 50C55 55 60 60 60 60Z"/>
+                                        </g>
+                                        <rect x="47" y="75" width="6" height="15" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <h3 class="growth-title">Sapling</h3>
+                                <p class="growth-description">Your tree grows as you make more contributions</p>
+                            </div>
+
+                            <div class="growth-step animate-fade-in" style="animation-delay: 0.2s;">
+                                <div class="growth-icon growth-icon-large">
+                                    <svg viewBox="0 0 100 100" fill="white" aria-hidden="true">
+                                        <g>
+                                            <path d="M50 80C50 80 45 70 45 60C45 50 48 45 50 40C52 45 55 50 55 60C55 70 50 80 50 80Z"/>
+                                            <path d="M35 65C35 65 30 60 30 55C30 50 32 47 35 45C37 47 40 50 40 55C40 60 35 65 35 65Z"/>
+                                            <path d="M65 65C65 65 70 60 70 55C70 50 68 47 65 45C63 47 60 50 60 55C60 60 65 65 65 65Z"/>
+                                            <path d="M42 72C42 72 38 68 38 64C38 60 40 58 42 56C44 58 46 60 46 64C46 68 42 72 42 72Z"/>
+                                            <path d="M58 72C58 72 62 68 62 64C62 60 60 58 58 56C56 58 54 60 54 64C54 68 58 72 58 72Z"/>
+                                        </g>
+                                        <rect x="47" y="80" width="6" height="15" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <h3 class="growth-title">Mighty Tree</h3>
+                                <p class="growth-description">Become a conservation champion with a full-grown tree</p>
+                            </div>
+                        </div>
+
+                        <div class="tree-pet-info">
+                            <p class="tree-pet-info-title">
+                                🌱 Every report helps your tree grow and contributes to real-world conservation efforts
+                            </p>
+                            <p class="tree-pet-info-text">
+                                Track your progress, compete with friends, and see the collective impact of our community.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-grid">
+                    <!-- Brand -->
+                    <div class="footer-brand">
+                        <div class="footer-logo">
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path d="M16 4C13 4 10 6 8 8C6 10 4 13 4 16C4 19 6 22 8 24C10 26 13 28 16 28C19 28 22 26 24 24C26 22 28 19 28 16C28 13 26 10 24 8C22 6 19 4 16 4Z" fill="url(#footerGradient)"/>
+                                <defs>
+                                    <linearGradient id="footerGradient" x1="4" y1="4" x2="28" y2="28">
+                                        <stop offset="0%" stop-color="#22c55e"/>
+                                        <stop offset="100%" stop-color="#16a34a"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <span class="footer-logo-text">InvaSee</span>
+                        </div>
+                        <p class="footer-tagline">
+                            Protecting our ecosystems together, one report at a time.
+                        </p>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div>
+                        <h3 class="footer-heading">Quick Links</h3>
+                        <ul class="footer-links">
+                            <li><a href="#how-it-works" class="footer-link">How It Works</a></li>
+                            <li><a href="#map" class="footer-link">Map</a></li>
+                            <li><a href="#report" class="footer-link">Start Reporting</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Connect -->
+                    <div>
+                        <h3 class="footer-heading">Connect</h3>
+                        <ul class="footer-links">
+                            <li><a href="mailto:info@invasee.com" class="footer-link">info@invasee.com</a></li>
+                            <li class="footer-social">
+                                <a href="#" class="footer-link" aria-label="Follow us on social media">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                        <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
+                                    </svg>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="footer-copyright">
+                    <p>&copy; <span id="current-year"></span> InvaSee. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
