@@ -55,7 +55,6 @@ body {
     line-height: 1.6;
     color: var(--color-text);
     background-color: var(--color-bg);
-    overflow-x: hidden;
 }
 
 /* ===== Typography ===== */
@@ -612,9 +611,9 @@ a {
     *,
     *::before,
     *::after {
-        animation-duration: 0.01ms !important;
+        animation-duration: 0s !important;
         animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+        transition-duration: 0s !important;
     }
 }
 
