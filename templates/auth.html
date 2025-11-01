@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In / Sign Up • Invasisee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body>
+  <header class="header">
+    <nav class="nav-container">
+      <div class="nav-content">
+        <div class="logo-container">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M16 4C13 4 10 6 8 8C6 10 4 13 4 16C4 19 6 22 8 24C10 26 13 28 16 28C19 28 22 26 24 24C26 22 28 19 28 16C28 13 26 10 24 8C22 6 19 4 16 4Z" fill="url(#leafGradient)"/>
+            <defs>
+              <linearGradient id="leafGradient" x1="4" y1="4" x2="28" y2="28">
+                <stop offset="0%" stop-color="#8E9C78"/>
+                <stop offset="100%" stop-color="#485C11"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="logo-text">Invasisee</span>
+        </div>
+        <div class="nav-links">
+          <a href="/" class="nav-link">Home</a>
+          <a href="/redirect-to-map" class="nav-link">Map</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero-section" style="padding-top: 7rem; padding-bottom: 4rem;">
+      <div class="container" style="display:flex; justify-content:center;">
+        <div class="auth-card animate-fade-in" style="width:100%; max-width: 28rem; background:white; border:1px solid var(--gray-100); border-radius:1rem; box-shadow:0 10px 25px rgba(0,0,0,.08); padding:2rem;">
+          <h1 class="hero-title" style="font-size:2rem; text-align:center; margin-bottom:1rem;">Welcome</h1>
+          <p class="hero-subtitle" style="font-size:1rem; text-align:center; margin-bottom:1.5rem;">Sign in or create an account to continue.</p>
+
+          <div class="tab-buttons" style="display:flex; gap:.5rem; margin-bottom:1rem;">
+            <button id="tab-signin" class="btn btn-outline" style="flex:1;">Sign In</button>
+            <button id="tab-signup" class="btn btn-primary" style="flex:1;">Sign Up</button>
+          </div>
+
+          <form id="form-signin" class="auth-form" style="display:block;">
+            <input class="auth-input" id="si-username" type="text" placeholder="Username" required />
+            <input class="auth-input" id="si-password" type="password" placeholder="Password" required />
+            <div id="si-error" class="auth-error" style="display:none;"></div>
+            <button class="btn btn-primary" type="submit" style="width:100%; margin-top:.5rem;">Sign In</button>
+          </form>
+
+          <form id="form-signup" class="auth-form" style="display:none;">
+            <input class="auth-input" id="su-username" type="text" placeholder="Username" required />
+            <input class="auth-input" id="su-password" type="password" placeholder="Password" required />
+            <div id="su-error" class="auth-error" style="display:none;"></div>
+            <button class="btn btn-primary" type="submit" style="width:100%; margin-top:.5rem;">Create Account</button>
+          </form>
+
+          <p style="text-align:center; margin-top:1rem; font-size:.9rem; color:var(--gray-600);">By continuing you agree to our terms.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const API_URL = window.location.origin;
+
+    function setActive(tab) {
+      const si = document.getElementById('form-signin');
+      const su = document.getElementById('form-signup');
+      const btnSi = document.getElementById('tab-signin');
+      const btnSu = document.getElementById('tab-signup');
+      const isSignin = tab === 'signin';
+      si.style.display = isSignin ? 'block' : 'none';
+      su.style.display = isSignin ? 'none' : 'block';
+      btnSi.classList.toggle('btn-primary', isSignin);
+      btnSi.classList.toggle('btn-outline', !isSignin);
+      btnSu.classList.toggle('btn-primary', !isSignin);
+      btnSu.classList.toggle('btn-outline', isSignin);
+    }
+
+    async function request(path, options = {}) {
+      const config = {
+        method: options.method || 'GET',
+        headers: { 'Content-Type': 'application/json', ...(options.headers||{}) },
+        credentials: 'include',
+        body: options.body ? JSON.stringify(options.body) : undefined,
+      };
+      const res = await fetch(`${API_URL}${path}`, config);
+      const text = await res.text();
+      let data; try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text }; }
+      if (!res.ok) throw new Error(data?.detail || data?.message || res.statusText);
+      return data;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Tabs
+      document.getElementById('tab-signin').addEventListener('click', () => setActive('signin'));
+      document.getElementById('tab-signup').addEventListener('click', () => setActive('signup'));
+
+      // Sign In
+      document.getElementById('form-signin').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('si-username').value.trim();
+        const password = document.getElementById('si-password').value.trim();
+        const errEl = document.getElementById('si-error');
+        errEl.style.display = 'none';
+        try {
+          await request('/api/login', { method: 'POST', body: { username, password } });
+          window.location.href = '/app';
+        } catch (err) {
+          errEl.textContent = err.message || 'Sign in failed';
+          errEl.style.display = 'block';
+        }
+      });
+
+      // Sign Up
+      document.getElementById('form-signup').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('su-username').value.trim();
+        const password = document.getElementById('su-password').value.trim();
+        const errEl = document.getElementById('su-error');
+        errEl.style.display = 'none';
+        try {
+          await request('/api/register', { method: 'POST', body: { username, password } });
+          await request('/api/login', { method: 'POST', body: { username, password } });
+          window.location.href = '/app';
+        } catch (err) {
+          errEl.textContent = err.message || 'Sign up failed';
+          errEl.style.display = 'block';
+        }
+      });
+
+      // Default to Sign Up tab for new users
+      setActive('signup');
+    });
+  </script>
+</body>
+</html>

@@ -18,7 +18,7 @@ app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HT
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)
-app.config['SESSION_COOKIE_NAME'] = 'invasee_session'
+app.config['SESSION_COOKIE_NAME'] = 'Invasisee_session'
 
 # Flask-Login configuration
 login_manager = LoginManager()
@@ -73,6 +73,28 @@ def index():
             'is_authenticated': True
         }
     return render_template('index.html', user=user_data)
+
+
+@app.route("/auth")
+def auth():
+    """Serve a dedicated authentication page; redirect if already logged in"""
+    if current_user.is_authenticated:
+        # Already logged in, send to app
+        return render_template('app.html', user={
+            'username': current_user.username,
+            'is_authenticated': True
+        })
+    return render_template('auth.html', user=None)
+
+
+@app.route("/app")
+@login_required
+def app_page():
+    """Basic app landing after login"""
+    return render_template('app.html', user={
+        'username': current_user.username,
+        'is_authenticated': True
+    })
 
 
 @app.route("/api/register", methods=["POST"])
@@ -144,7 +166,7 @@ def api_logout():
     
     response = make_response(jsonify({"msg": "logged out successfully"}))
     # Explicitly delete all session cookies
-    response.set_cookie('invasee_session', '', expires=0)
+    response.set_cookie('Invasisee_session', '', expires=0)
     response.set_cookie('remember_token', '', expires=0)
     response.set_cookie('session', '', expires=0)
     
