@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import sqlite3
 
 app = FastAPI()
 
