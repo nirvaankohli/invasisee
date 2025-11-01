@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Invasisee - Identify and report invasive species using AI. Protect your environment with community-driven conservation.">
+    <title>Invasisee - Protect Your Environment</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true">
+                    <circle cx="16" cy="16" r="14" fill="#2d6a4f" opacity="0.2"/>
+                    <path d="M16 8 L20 14 L16 12 L12 14 Z" fill="#2d6a4f"/>
+                    <rect x="15" y="14" width="2" height="8" fill="#2d6a4f"/>
+                    <circle cx="16" cy="24" r="1.5" fill="#2d6a4f"/>
+                </svg>
+                <span class="logo-text">Invasisee</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#map" class="nav-link">Map</a></li>
+                <li><a href="#report" class="nav-link nav-link-cta">Start Reporting</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Protect Your Environment.</h1>
+                <p class="hero-subtitle">Identify and report invasive species using AI and crowd verification. Turn local action into global environmental protection.</p>
+                <div class="hero-ctas">
+                    <a href="#report" class="btn btn-primary">Start Reporting</a>
+                    <a href="#how-it-works" class="btn btn-secondary">Learn How</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-backdrop">
+                    <div class="phone-mock">
+                        <div class="phone-screen">
+                            <div class="mock-content">
+                                <div class="mock-header"></div>
+                                <div class="mock-image"></div>
+                                <div class="mock-info"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <svg class="leaf-decoration leaf-1" width="60" height="60" viewBox="0 0 60 60" aria-hidden="true">
+            <path d="M30 5 Q50 10 55 30 Q50 50 30 55 Q20 30 30 5" fill="#52b788" opacity="0.3"/>
+        </svg>
+        <svg class="leaf-decoration leaf-2" width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M20 5 Q35 8 38 20 Q35 32 20 35 Q12 20 20 5" fill="#40916c" opacity="0.4"/>
+        </svg>
+    </section>
+
+    <!-- Anchor for reporting feature -->
+    <span id="report"></span>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="cards">
+                <article class="card">
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true">
+                            <circle cx="24" cy="24" r="20" fill="#d8f3dc" stroke="#2d6a4f" stroke-width="2"/>
+                            <path d="M24 14 L24 34 M14 24 L34 24" stroke="#2d6a4f" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">1. Spot & Capture</h3>
+                    <p class="card-text">Take a photo of a suspicious plant or animal using your smartphone camera.</p>
+                </article>
+                <article class="card">
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true">
+                            <circle cx="24" cy="24" r="20" fill="#d8f3dc" stroke="#2d6a4f" stroke-width="2"/>
+                            <circle cx="24" cy="18" r="6" fill="none" stroke="#2d6a4f" stroke-width="2"/>
+                            <path d="M18 30 Q24 28 30 30 L30 34 L18 34 Z" fill="#2d6a4f"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">2. AI Analysis</h3>
+                    <p class="card-text">Our AI identifies the species and checks if it's invasive to your local area.</p>
+                </article>
+                <article class="card">
+                    <div class="card-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true">
+                            <circle cx="24" cy="24" r="20" fill="#d8f3dc" stroke="#2d6a4f" stroke-width="2"/>
+                            <path d="M24 16 L28 22 L24 20 L20 22 Z M23 22 L25 22 L25 30 L23 30 Z" fill="#2d6a4f"/>
+                            <circle cx="24" cy="32" r="2" fill="#2d6a4f"/>
+                        </svg>
+                    </div>
+                    <h3 class="card-title">3. Community Verify</h3>
+                    <p class="card-text">Other users confirm your finding. Grow your virtual tree with each verified report!</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Preview Section -->
+    <section class="map-preview" id="map">
+        <div class="container">
+            <article class="map-card">
+                <div class="map-card-content">
+                    <h2 class="map-card-title">Explore Nearby Reports</h2>
+                    <p class="map-card-text">See invasive species reports from your community on an interactive map. Discover hotspots and contribute to local conservation efforts.</p>
+                    <a href="#map" class="btn btn-primary">View Map</a>
+                </div>
+                <div class="map-card-visual">
+                    <div class="map-placeholder">
+                        <svg width="100%" height="100%" viewBox="0 0 300 200" aria-label="Map placeholder">
+                            <defs>
+                                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#b7e4c7" stroke-width="0.5"/>
+                                </pattern>
+                            </defs>
+                            <rect width="300" height="200" fill="#d8f3dc"/>
+                            <rect width="300" height="200" fill="url(#grid)"/>
+                            <circle cx="100" cy="80" r="6" fill="#2d6a4f" opacity="0.8"/>
+                            <circle cx="180" cy="100" r="6" fill="#2d6a4f" opacity="0.8"/>
+                            <circle cx="220" cy="70" r="6" fill="#2d6a4f" opacity="0.8"/>
+                            <circle cx="140" cy="130" r="6" fill="#2d6a4f" opacity="0.8"/>
+                            <path d="M50 120 Q100 100 150 130" stroke="#40916c" stroke-width="2" fill="none" opacity="0.5"/>
+                        </svg>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <svg class="leaf-decoration leaf-3" width="50" height="50" viewBox="0 0 50 50" aria-hidden="true">
+            <path d="M25 5 Q42 9 46 25 Q42 41 25 45 Q16 25 25 5" fill="#74c69d" opacity="0.3"/>
+        </svg>
+    </section>
+
+    <!-- Tree Pet Teaser Section -->
+    <section class="tree-pet" id="tree-pet">
+        <div class="container">
+            <div class="tree-pet-content">
+                <div class="tree-pet-visual">
+                    <svg class="tree-pet-icon" width="120" height="120" viewBox="0 0 120 120" aria-label="Virtual tree illustration">
+                        <circle cx="60" cy="60" r="55" fill="#d8f3dc" opacity="0.5"/>
+                        <path d="M60 30 L75 50 L68 50 L80 65 L70 65 L82 80 L38 80 L50 65 L40 65 L52 50 L45 50 Z" fill="#2d6a4f"/>
+                        <rect x="55" y="80" width="10" height="20" fill="#40916c"/>
+                        <circle cx="65" cy="45" r="3" fill="#52b788"/>
+                        <circle cx="55" cy="55" r="2.5" fill="#52b788"/>
+                        <circle cx="70" cy="60" r="2" fill="#52b788"/>
+                    </svg>
+                </div>
+                <div class="tree-pet-text">
+                    <h2 class="tree-pet-title">Grow Your Virtual Tree</h2>
+                    <p class="tree-pet-description">Each verified report helps your personal tree grow! Watch it flourish as you contribute to protecting the environment. Earn rewards and badges as your tree reaches new heights.</p>
+                    <a href="#report" class="btn btn-primary">Start Growing</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">Invasisee</h3>
+                    <p class="footer-text">Turning local action into global environmental protection through community-driven conservation.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-heading">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home" class="footer-link">Home</a></li>
+                        <li><a href="#how-it-works" class="footer-link">How It Works</a></li>
+                        <li><a href="#map" class="footer-link">Map</a></li>
+                        <li><a href="#report" class="footer-link">Start Reporting</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-heading">Connect</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">About Us</a></li>
+                        <li><a href="#" class="footer-link">Contact</a></li>
+                        <li><a href="#" class="footer-link">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Invasisee. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
