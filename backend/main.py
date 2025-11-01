@@ -141,7 +141,14 @@ def api_logout():
     """Logout user by clearing secure session"""
     logout_user()
     session.clear()
-    return jsonify({"msg": "logged out successfully"}), 200
+    
+    response = make_response(jsonify({"msg": "logged out successfully"}))
+    # Explicitly delete all session cookies
+    response.set_cookie('invasee_session', '', expires=0)
+    response.set_cookie('remember_token', '', expires=0)
+    response.set_cookie('session', '', expires=0)
+    
+    return response, 200
 
 
 @login_manager.unauthorized_handler
