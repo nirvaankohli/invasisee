@@ -18,11 +18,11 @@ export const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left column: Text content */}
           <div className="text-center lg:text-left space-y-8 animate-fade-in">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight text-balance">
+            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-display font-bold text-gray-900 leading-tight text-balance">
               Spot. Verify. Protect.
             </h1>
             
-            <p className="text-xl sm:text-2xl text-gray-600 max-w-2xl mx-auto lg:mx-0 text-balance">
+            <p className="text-xl sm:text-2xl text-gray-600 max-w-2xl mx-auto lg:mx-0 text-balance font-serif font-light leading-relaxed">
               Join our community in protecting local ecosystems by identifying and reporting invasive species.
             </p>
 

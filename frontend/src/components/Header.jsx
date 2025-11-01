@@ -32,7 +32,7 @@ export const Header = () => {
                 </linearGradient>
               </defs>
             </svg>
-            <span className="text-xl font-bold text-gray-900">InvaSee</span>
+            <span className="text-xl font-serif font-semibold text-gray-900">InvaSee</span>
           </div>
 
           {/* Navigation Links */}

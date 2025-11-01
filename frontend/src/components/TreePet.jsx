@@ -47,10 +47,10 @@ export const TreePet = () => {
     <section className="py-20 sm:py-28 bg-gradient-to-b from-green-50/30 to-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center animate-fade-in">
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 text-balance">
+          <h2 className="text-5xl sm:text-6xl font-display font-bold text-gray-900 mb-4 text-balance">
             Watch Your Impact Grow
           </h2>
-          <p className="text-xl text-gray-600 mb-16 max-w-2xl mx-auto text-balance">
+          <p className="text-xl text-gray-600 mb-16 max-w-2xl mx-auto text-balance font-serif font-light">
             Nurture your virtual tree pet as you contribute to protecting real ecosystems.
           </p>
 

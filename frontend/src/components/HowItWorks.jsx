@@ -20,10 +20,10 @@ export const HowItWorks = () => {
     <section id="how-it-works" className="py-20 sm:py-28 bg-gradient-to-b from-white to-green-50/30">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 text-balance">
+          <h2 className="text-5xl sm:text-6xl font-display font-bold text-gray-900 mb-4 text-balance">
             How It Works
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto text-balance">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto text-balance font-serif font-light">
             Three simple steps to help protect our ecosystem
           </p>
         </div>

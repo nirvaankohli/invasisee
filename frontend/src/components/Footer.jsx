@@ -27,7 +27,7 @@ export const Footer = () => {
                   </linearGradient>
                 </defs>
               </svg>
-              <span className="text-xl font-bold">InvaSee</span>
+              <span className="text-xl font-serif font-semibold">InvaSee</span>
             </div>
             <p className="text-gray-400 text-sm">
               Protecting our ecosystems together, one report at a time.

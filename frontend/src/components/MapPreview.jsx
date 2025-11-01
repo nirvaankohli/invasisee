@@ -30,10 +30,10 @@ export const MapPreview = () => {
           <div className="bg-gradient-to-br from-green-50 to-white rounded-3xl shadow-2xl overflow-hidden border border-green-100 animate-fade-in">
             <div className="p-8 sm:p-12">
               <div className="text-center mb-8">
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 text-balance">
+                <h2 className="text-4xl sm:text-5xl font-display font-bold text-gray-900 mb-4 text-balance">
                   Explore the Map
                 </h2>
-                <p className="text-lg text-gray-600 max-w-2xl mx-auto text-balance">
+                <p className="text-lg text-gray-600 max-w-2xl mx-auto text-balance font-serif font-light">
                   See real-time invasive species sightings in your area and contribute to our growing database.
                 </p>
               </div>
