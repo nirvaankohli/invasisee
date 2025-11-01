@@ -1,16 +1,94 @@
-# React + Vite
+# InvaSee Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A sophisticated, nature-inspired landing page for InvaSee - an invasive species tracking and reporting platform.
 
-Currently, two official plugins are available:
+## 🌿 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Nature-Inspired Design**: White canvas with green color palette, organic blob shapes, and subtle gradients
+- **Responsive & Accessible**: Mobile-first design with semantic HTML and ARIA labels
+- **Smooth Animations**: Entrance animations and hover effects using Tailwind transitions
+- **Reusable Components**: Modular React components for maintainability
+- **Performance Optimized**: Lazy loading for map components and optimized production builds
 
-## React Compiler
+## 🚀 Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js (v18 or higher)
+- npm
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Installation
+
+```bash
+npm install
+```
+
+### Development
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`
+
+### Build
+
+Create a production build:
+
+```bash
+npm run build
+```
+
+Preview the production build:
+
+```bash
+npm run preview
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/
+│   ├── Button.jsx          # Reusable button component (primary & outline variants)
+│   ├── Header.jsx          # Fixed header with navigation
+│   ├── Hero.jsx            # Hero section with headline and phone mock
+│   ├── HowItWorks.jsx      # Three-step process cards
+│   ├── MapPreview.jsx      # Lazy-loaded map placeholder
+│   ├── TreePet.jsx         # Tree growth visualization
+│   └── Footer.jsx          # Footer with links
+├── App.jsx                 # Main app component
+├── index.css               # Tailwind imports and base styles
+└── main.jsx                # App entry point
+```
+
+## 🎨 Design System
+
+### Color Palette
+- Primary Green: `#22c55e` (green-500)
+- Secondary Green: `#16a34a` (green-600)
+- Text: `#111827` (gray-900)
+- Background: `#ffffff` (white)
+
+### Typography
+System font stack for optimal performance and native feel
+
+### Accessibility
+- Semantic HTML5 elements
+- ARIA labels on all interactive elements
+- 4.5:1 contrast ratio compliance
+- Visible focus rings for keyboard navigation
+- Proper heading hierarchy
+
+## 🛠️ Tech Stack
+
+- **React 18**: UI library
+- **Vite**: Build tool and dev server
+- **Tailwind CSS v4**: Utility-first CSS framework
+- **PostCSS**: CSS processing
+
+## 📝 License
+
+See the main repository for license information.
