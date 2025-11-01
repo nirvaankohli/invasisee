@@ -38,7 +38,7 @@ def register(user: UserCreate):
 
 
 @app.post("/token")
-def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+def login_for_access_token(response: Response, form_data: OAuth2PasswordRequestForm = Depends()):
     user = auth_module.get_user(form_data.username)
     if not user or not auth_module.verify_password(form_data.password, user["password"]):
         raise HTTPException(
@@ -48,11 +48,8 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
         )
 
     access_token = auth_module.create_access_token({"sub": user["username"]})
-
-    resp = Response(content={})
-
-    resp.set_cookie(key="session", value=access_token, httponly=True, samesite="lax")
-
+    # set cookie on the response provided by FastAPI
+    response.set_cookie(key="session", value=access_token, httponly=True, samesite="lax")
     return {"access_token": access_token, "token_type": "bearer"}
 
 
