@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Capture • InvaSee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+   <!-- Leaflet CSS for in-capture map preview -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <style>
+    .capture-container { min-height: 100vh; display:flex; flex-direction:column; }
+    .cap-header { position: sticky; top:0; z-index: 10; background: rgba(255,255,255,.95); backdrop-filter: blur(8px); border-bottom:1px solid var(--gray-100); }
+    .cap-bar { max-width: 640px; margin: 0 auto; display:flex; align-items:center; gap:.75rem; padding: .75rem 1rem; }
+    .cap-title { font-weight: 700; font-size: 1.25rem; color: var(--gray-800); }
+    .cap-main { flex:1; position:relative; padding: 1rem; }
+    .cap-stage { position:relative; max-width: 640px; margin: 0 auto; height: calc(100vh - 170px); }
+    .camera-wrap { position:relative; z-index: 2; width: 100%; display:grid; gap: .75rem; transition: transform .5s ease, opacity .4s ease; }
+    .cap-map { position:absolute; inset:0; z-index: 1; border-radius: .75rem; overflow: hidden; opacity: 0; transition: opacity .4s ease; }
+    .cap-bottom-sheet { position: fixed; left:0; right:0; bottom:0; z-index: 5; background: #fff; border-top-left-radius: 1rem; border-top-right-radius: 1rem; box-shadow: 0 -8px 24px rgba(0,0,0,.12); transform: translateY(110%); transition: transform .45s ease; padding: 1rem; }
+    .cap-bottom-inner { max-width: 640px; margin: 0 auto; }
+    .show-results .camera-wrap { transform: translateY(120%); opacity: 0; pointer-events: none; }
+    .show-results .cap-map { opacity: 1; }
+    .show-results .cap-bottom-sheet { transform: translateY(0); }
+    .video-frame, .preview-frame { width: 100%; aspect-ratio: 3/4; background: #000; border-radius: .75rem; overflow: hidden; display:flex; align-items:center; justify-content:center; }
+    video { width: 100%; height: 100%; object-fit: cover; }
+    canvas { display:none; }
+    .cap-actions { display:flex; gap:.75rem; }
+    .cap-btn { flex:1; display:flex; align-items:center; justify-content:center; padding:.75rem 1rem; border-radius:.75rem; font-weight:700; cursor:pointer; border:1px solid var(--gray-200); background:#fff; }
+    .cap-btn.primary { background: linear-gradient(135deg, var(--brand-sage), var(--brand-primary)); color:#fff; border-color: transparent; }
+    .file-fallback { text-align:center; color: var(--gray-600); font-size:.9rem; }
+    .result-name { font-weight:800; font-size:1.15rem; color: #111827; }
+    .result-details { background:#fff; border:1px solid var(--gray-200); border-radius:.75rem; padding: .75rem 1rem; color: #1f2937; }
+    .result-details .row { display:flex; justify-content:space-between; font-weight:600; margin-bottom:.25rem; }
+    .result-actions { display:flex; gap:.75rem; }
+    /* Ensure popup text is readable */
+    .leaflet-popup-content { color: #111827; }
+  </style>
+</head>
+<body>
+  <div class="capture-container">
+    <header class="cap-header">
+      <div class="cap-bar">
+        <a href="/app" class="nav-link">Back</a>
+        <div class="cap-title">New Report</div>
+      </div>
+    </header>
+
+    <main class="cap-main">
+      <div class="cap-stage" id="cap-stage">
+        <div id="cap-map" class="cap-map"></div>
+        <div class="camera-wrap" id="camera-wrap">
+        <div class="video-frame">
+          <video id="video" autoplay playsinline></video>
+          <canvas id="canvas"></canvas>
+          <div id="preview" class="preview-frame" style="display:none;"></div>
+        </div>
+        <div class="cap-actions">
+          <button id="btn-capture" class="cap-btn primary">Capture</button>
+          <button id="btn-retake" class="cap-btn" style="display:none;">Retake</button>
+          <button id="btn-upload" class="cap-btn" style="display:none;">Send</button>
+        </div>
+        <div class="file-fallback">
+          Problems with the camera? <label style="text-decoration:underline; cursor:pointer;">Upload a photo <input id="file-input" type="file" accept="image/*" capture="environment" style="display:none;" /></label>
+        </div>
+        </div>
+      </div>
+    </main>
+    <aside class="cap-bottom-sheet" id="cap-bottom">
+      <div class="cap-bottom-inner">
+        <div class="result-name" id="res-name">Analysis</div>
+        <div style="margin-top:.5rem; display:flex; gap:.75rem; align-items:flex-start;">
+          <img id="thumb-inline" alt="preview" style="width:80px;height:80px;object-fit:cover;border-radius:.5rem;border:1px solid #e5e7eb;display:none;"/>
+          <div class="result-details" style="flex:1;">
+            <div class="row"><span>Invasive</span><span id="res-invasive">Unknown</span></div>
+            <div id="res-summary" style="margin-top:.25rem; line-height:1.5;"></div>
+          </div>
+        </div>
+        <div class="result-actions" style="margin-top:.75rem;">
+          <a class="cap-btn primary" href="/app">Done</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    const API_URL = window.location.origin;
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const preview = document.getElementById('preview');
+    const btnCapture = document.getElementById('btn-capture');
+    const btnRetake = document.getElementById('btn-retake');
+    const btnUpload = document.getElementById('btn-upload');
+    const fileInput = document.getElementById('file-input');
+    const capRoot = document.querySelector('.capture-container');
+    const stageEl = document.getElementById('cap-stage');
+    const mapEl = document.getElementById('cap-map');
+    const thumbInline = document.getElementById('thumb-inline');
+
+  let stream = null;
+    let capturedBlob = null;
+    let capturedDataUrl = null;
+  let geo = { lat: null, lng: null };
+    let capMap = null; let capMarker = null;
+
+    async function initCamera() {
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+        video.srcObject = stream;
+      } catch (e) {
+        console.warn('Camera error, falling back to file input', e);
+      }
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          pos => { geo.lat = pos.coords.latitude; geo.lng = pos.coords.longitude; },
+          err => { console.warn('Geolocation error', err); },
+          { enableHighAccuracy: true, timeout: 5000, maximumAge: 30000 }
+        );
+      }
+    }
+
+    function toBlob(dataUrl) {
+      const arr = dataUrl.split(',');
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bstr = atob(arr[1]);
+      let n = bstr.length; const u8arr = new Uint8Array(n);
+      while(n--) { u8arr[n] = bstr.charCodeAt(n); }
+      return new Blob([u8arr], { type: mime });
+    }
+
+    btnCapture.addEventListener('click', () => {
+      const w = video.videoWidth; const h = video.videoHeight || Math.round(w * 4/3);
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, w, h);
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+  capturedBlob = toBlob(dataUrl);
+  capturedDataUrl = dataUrl;
+
+      // Show preview
+      const img = new Image();
+      img.src = dataUrl; img.style.width = '100%'; img.style.height = '100%'; img.style.objectFit = 'cover';
+      preview.innerHTML = ''; preview.appendChild(img);
+      preview.style.display = 'flex';
+      video.style.display = 'none';
+
+      btnCapture.style.display = 'none';
+      btnRetake.style.display = 'flex';
+      btnUpload.style.display = 'flex';
+    });
+
+    btnRetake.addEventListener('click', () => {
+      capturedBlob = null;
+      preview.style.display = 'none';
+      video.style.display = 'block';
+      btnCapture.style.display = 'flex';
+      btnRetake.style.display = 'none';
+      btnUpload.style.display = 'none';
+    });
+
+    function ensureMap() {
+      if (capMap) return capMap;
+      capMap = L.map('cap-map');
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(capMap);
+      // size map after slight delay
+      setTimeout(() => capMap.invalidateSize(), 60);
+      return capMap;
+    }
+
+    function placePreviewMarker(lat, lng) {
+      const iconHtml = `<div style="width:44px;height:44px;border-radius:10px;overflow:hidden;box-shadow:0 8px 16px rgba(0,0,0,.25);border:2px solid #fff;background:#eee;">
+        <img src="${capturedDataUrl}" alt="preview" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+      </div>`;
+      const icon = L.divIcon({ html: iconHtml, className: 'capture-thumb-marker', iconSize: [44,44], iconAnchor: [22,22], popupAnchor: [0,-22] });
+      if (capMarker) { capMap.removeLayer(capMarker); }
+      capMarker = L.marker([lat, lng], { icon }).addTo(capMap);
+      capMap.setView([lat, lng], 16);
+    }
+
+    btnUpload.addEventListener('click', async () => {
+      if (!capturedBlob) return;
+  const form = new FormData();
+      form.append('image', capturedBlob, 'capture.jpg');
+  if (geo.lat !== null && geo.lng !== null) { form.append('lat', String(geo.lat)); form.append('lng', String(geo.lng)); }
+
+      try {
+        const res = await fetch(`${API_URL}/api/report`, { method: 'POST', body: form, credentials: 'include' });
+        const data = await res.json().catch(()=>({}));
+        if (!res.ok) throw new Error(data?.detail || res.statusText);
+        // Show result below, with image preview and info
+        const result = data?.result || {};
+        document.getElementById('res-name').textContent = result.species || 'Unknown';
+        const inv = (typeof result.invasive === 'boolean') ? (result.invasive ? 'Yes' : 'No') : 'Unknown';
+        document.getElementById('res-invasive').textContent = inv;
+        document.getElementById('res-summary').textContent = result.summary || data?.analysis || 'No summary';
+        // Show inline thumb in sheet
+        if (capturedDataUrl) { thumbInline.src = capturedDataUrl; thumbInline.style.display = 'block'; }
+        // Reveal map and bottom sheet with animation, placing preview marker
+        ensureMap();
+        const lat = (typeof geo.lat === 'number' && !Number.isNaN(geo.lat)) ? geo.lat : 39.8283;
+        const lng = (typeof geo.lng === 'number' && !Number.isNaN(geo.lng)) ? geo.lng : -98.5795;
+        placePreviewMarker(lat, lng);
+        capRoot.classList.add('show-results');
+      } catch (e) {
+        alert('Upload failed: ' + (e.message || 'Unknown error'));
+      }
+    });
+
+    fileInput.addEventListener('change', async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+  const form = new FormData();
+      form.append('image', file, file.name || 'upload.jpg');
+  if (geo.lat !== null && geo.lng !== null) { form.append('lat', String(geo.lat)); form.append('lng', String(geo.lng)); }
+      try {
+        const res = await fetch(`${API_URL}/api/report`, { method: 'POST', body: form, credentials: 'include' });
+        const data = await res.json().catch(()=>({}));
+        if (!res.ok) throw new Error(data?.detail || res.statusText);
+        const result = data?.result || {};
+        document.getElementById('res-name').textContent = result.species || 'Unknown';
+        const inv = (typeof result.invasive === 'boolean') ? (result.invasive ? 'Yes' : 'No') : 'Unknown';
+        document.getElementById('res-invasive').textContent = inv;
+        document.getElementById('res-summary').textContent = result.summary || data?.analysis || 'No summary';
+        // Get data URL for marker/inline thumb
+        const reader = new FileReader();
+        reader.onload = () => {
+          capturedDataUrl = reader.result;
+          if (capturedDataUrl) { thumbInline.src = capturedDataUrl; thumbInline.style.display = 'block'; }
+          ensureMap();
+          const lat = (typeof geo.lat === 'number' && !Number.isNaN(geo.lat)) ? geo.lat : 39.8283;
+          const lng = (typeof geo.lng === 'number' && !Number.isNaN(geo.lng)) ? geo.lng : -98.5795;
+          placePreviewMarker(lat, lng);
+          capRoot.classList.add('show-results');
+        };
+        reader.readAsDataURL(file);
+      } catch (e) {
+        alert('Upload failed: ' + (e.message || 'Unknown error'));
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', initCamera);
+  </script>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</body>
+</html>

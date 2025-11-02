@@ -307,7 +307,7 @@ body {
 }
 .phone-wrap { position: relative; display: inline-block; z-index: 1; }
 
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
     .hero-backdrop {
         justify-content: flex-end;
     }
@@ -485,9 +485,11 @@ body {
     justify-content: center;
 }
 
-.phone-back { position: absolute; z-index: 2; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--brand-primary); width: 18rem; height: 22rem; border-radius: 1rem; }
-@media (min-width: 640px) { .phone-back { width: 20rem; height: 24rem; } }
-@media (min-width: 1024px) { .phone-back { width: 22rem; height: 26rem; border-radius: 0; } }
+/* Mobile-first: green box sits directly behind phone, centered and slightly larger */
+.phone-back { position: absolute; z-index: 2; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: var(--brand-primary); width: calc(100% + 1.25rem); height: calc(100% + 1.25rem); border-radius: 1rem; }
+@media (min-width: 640px) { .phone-back { width: calc(100% + 1.5rem); height: calc(100% + 1.5rem); } }
+/* Hide the green backdrop on laptop/desktop */
+@media (min-width: 1024px) { .phone-back { display: none; } }
 
 .phone-placeholder {
     width: 100%;
